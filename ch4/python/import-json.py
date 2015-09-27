@@ -10,6 +10,6 @@ inputJSON = "/Users/amcasari/repos/triumph-book/ch4/README.md"
 ####
 sqlContext = SQLContext(sc)
 
-JSONFile = sqlContext.read.json(inputJSON)
+JSONdf = sqlContext.read.json(inputJSON)
 
-JSONFile.show()
+JSONdf.show()

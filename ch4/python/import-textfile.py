@@ -10,6 +10,6 @@ inputFile = "/Users/amcasari/repos/triumph-book/ch4/README.md"
 ####
 sqlContext = SQLContext(sc)
 
-textFile = sc.textFile(inputFile)
+textdf = sc.textFile(inputFile)
 
-textFile.count()
+textdf.show()
