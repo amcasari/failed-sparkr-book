@@ -1,15 +1,15 @@
 library(SparkR)
-sc <- sparkR.init(master="local[2]",appName="convert-local-dataframe")
+sc <- sparkR.init(master="local[2]",appName="import-parquet")
 sqlContext <- sparkRSQL.init(sc)
 
 # we'll test out converting Michelson Speed of Light Data from R's datasets package
-df <- createDataFrame(sqlContext, morley)
-head(df)
+local_df <- createDataFrame(sqlContext, morley)
+head(local_df)
 # save as a Parquet file, preserving the schema
-saveAsParquetFile(df, "morley.parquet")
+write.df(local_df, path="morely.parquet", source="parquet", mode="overwrite")
 
 # now we can load the parquet file and check to see we have the same data
-df.parquet <- parquetFile(sqlContext, "morley.parquet")
-head(df.parquet)
+df_parquet <- parquetFile(sqlContext, "morley.parquet")
+head(df_parquet)
 
 sparkR.stop()
