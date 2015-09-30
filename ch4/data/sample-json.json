@@ -1,5 +1,6 @@
-{"id": "1", "name": "Buffy"},
-{"id": "2", "name": "Willow"},
-{"id": "3", "name": "Xander"},
-{"id": "4", "name": "Anya"},
-{"id": "5", "name": "Dawn"}
+{"id": "1", "name": "Buffy", "role": "First Slayer"},
+{"id": "2", "name": "Willow", "role": "Witch"},
+{"id": "3", "name": "Xander", "role": "Friend"},
+{"id": "4", "name": "Anya", "role": "Retired Vengeance Demon"},
+{"id": "5", "name": "Dawn", "role": "Former Mystical Key"},
+{"id": "6", "name": "Faith", "role": "Slayer-in-Waiting"}
