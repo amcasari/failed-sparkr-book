@@ -25,17 +25,17 @@ new_text <- str_replace(new_text, pattern = "'", replacement = "_")
 # check that we have the rows we want to keep
 new_text[1:5]
 
-# save to a new text file for import as a data frame
+# save to a new text file for import as a data.frame
 new_textFile <- "/Users/amcasari/repos/triumph-book/ch4/data/uvm-hedonometer/new-data.txt"
 cat(new_text, file= new_textFile , sep = "\n")
 
-# import the tsv into a native dataframe
+# import the tsv into a native data.frame
 happy_words_df <- read.table(new_textFile, sep = "\t", header=TRUE)
 
-# check on the lovely new native dataframe
+# check on the lovely new native data.frame
 View(happy_words_df)
 
-# now we can convert to a SparkR dataframe for distributed experimentation
+# now we can convert to a SparkR DataFrame for distributed experimentation
 library(SparkR)
 sc <- sparkR.init(master="local[2]",appName="import-textfile")
 sqlContext <- sparkRSQL.init(sc)

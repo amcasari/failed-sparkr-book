@@ -1,4 +1,4 @@
-Sys.setenv('SPARKR_SUBMIT_ARGS'='--packages com.databricks:spark-csv_2.11:1.2.0 sparkr-shell')
+sparSys.setenv('SPARKR_SUBMIT_ARGS'='--packages com.databricks:spark-csv_2.11:1.2.0 sparkr-shell')
 library(SparkR)
 
 sc <- sparkR.init(master="local[2]",appName="csv-load", sparkPackages = "com.databricks:spark-csv_2.11:1.2.0")
