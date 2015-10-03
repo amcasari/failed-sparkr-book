@@ -17,6 +17,7 @@ localr_df <- data.frame(expt, run, speed)
 str(localr_df)
 
 sparkr_df <- createDataFrame(sqlContext, localr_df)
+printSchema(sparkr_df)
 head(sparkr_df)
 
 sparkR.stop()
