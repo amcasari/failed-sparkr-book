@@ -2,7 +2,7 @@
 
 ## Chapter 5: Learn to Explore, Ply and Tidy Big
 ![meta git commit messages]
-(https://xkcd.com/1267)
+(http://imgs.xkcd.com/comics/mess.png)
 
 Substitute "data" for "room"
 
