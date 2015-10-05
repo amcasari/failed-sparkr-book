@@ -6,6 +6,9 @@
 
 Substitute "data" for "room"
 
+![searching for answers on sparkR design]
+(http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png)
+
 ### References:
 
 ### Recommendations:
