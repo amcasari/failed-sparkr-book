@@ -10,8 +10,10 @@ df <- createDataFrame(sqlContext, r_df)
 
 # find out more about df
 head(df) # returns a data.frame
+showDF(df, numRows = 10)
 dtypes(df) # returns a list
 columns(df) # returns a character
+show(df) # no return
 printSchema(df) # no return
 
 # summary allows a quick stats update for data.frame
@@ -19,14 +21,22 @@ collect(summary(df))
 
 # describe gives same, also allows you to focus on specific columns
 collect(describe(df))
+show(describe(df))
 collect(describe(df, "Expt", "Run"))
 
 # column access
 head(select(df, "Expt"))
+head(select(df, df$Expt))
 
 # create new columns
+df$ExptF <- cast(df$Expt, "string")
+head(select(df, df$ExptF))
+printSchema(df)
 
 # crosstab
+registerTempTable(df, "table_df")
+new_df <- sql(sqlContext, "SELECT * from table_df")
+#TO DO: table + can we do crosstab with sql?
 
 # ave
 
@@ -34,7 +44,10 @@ head(select(df, "Expt"))
 
 # counts
 
-# categorical variables/ factors
+# categorical variables / factors
+df$ExptF <- cast(df$Expt, "string")
+head(select(df, df$ExptF))
+printSchema(df)
 
 # initial viz: histograms
 
