@@ -1,5 +1,4 @@
 # import dataframe
-
 sc <- sparkR.init(master="local[2]",appName="explore")
 sqlContext <- sparkRSQL.init(sc)
 
@@ -15,12 +14,15 @@ dtypes(df) # returns a list
 columns(df) # returns a character
 printSchema(df) # no return
 
-describe(df)
-summary(df)
+# summary allows a quick stats update for data.frame
+collect(summary(df))
+
+# describe gives same, also allows you to focus on specific columns
+collect(describe(df))
+collect(describe(df, "Expt", "Run"))
 
 # column access
 head(select(df, "Expt"))
-df
 
 # create new columns
 
