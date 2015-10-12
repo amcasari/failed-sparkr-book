@@ -81,7 +81,12 @@ head(select(df, df$ExptF))
 printSchema(df)
 
 # initial viz: histograms
+#TODO: BETTER DATA EXAMPLE THAN THIS
+library(ggplot2)
+qplot(Freq, data = collect(second_table), geom = "histogram")
 
 # initial viz: scatter plots
+#TODO: BETTER DATA EXAMPLE THAN THIS
+qplot(Hair, Freq, data = take(second_table, 10))
 
 sparkR.stop()
