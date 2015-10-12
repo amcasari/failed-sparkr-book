@@ -33,18 +33,44 @@ df$ExptF <- cast(df$Expt, "string")
 head(select(df, df$ExptF))
 printSchema(df)
 
+# delete columns
+df$ExptF <- NULL
+printSchema(df)
+
 # crosstab
 registerTempTable(df, "table_df")
-new_df <- sql(sqlContext, "SELECT * from table_df")
+new_df <- sql(sqlContext, "select * from table_df")
 #TO DO: table + can we do crosstab with sql?
 
-# ave
-
-# 2-way tables
+# average per experiment
+head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
 
 # counts
+head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
 
-# categorical variables / factors
+# two-way contingency tables
+# find a new dataset
+HairEyeColor
+hec <- as.data.frame(HairEyeColor)
+# can do this easily in R using xtabs from stats package
+xtabs(Freq ~ Hair + Eye, hec)
+# can do this in SparkR using sql + agg functions
+hdf <- createDataFrame(sqlContext, hec)
+printSchema(hdf)
+
+# using crosstab doesn't work the same here because of the shape of our data
+first_table <- crosstab(hdf, "Hair", "Eye")
+show(first_table)
+
+# but we can use SparkSQL to get our counts + frequencies
+registerTempTable(hdf, "haireyecolor")
+second_table <- collect(sql(sqlContext, "select Hair,
+                   Eye,
+                   sum(Freq) as Counts from haireyecolor group by Hair, Eye order by Hair"))
+head(second_table)
+
+# categorical variables / factors...
+# not sure where to go with this
 df$ExptF <- cast(df$Expt, "string")
 head(select(df, df$ExptF))
 printSchema(df)
