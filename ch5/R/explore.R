@@ -2,7 +2,7 @@
 sc <- sparkR.init(master="local[2]",appName="explore")
 sqlContext <- sparkRSQL.init(sc)
 
-# we'll test out converting morley, Michelson Speed of Light Data from R's datasets package
+# we'll test out our exploration with some included data from R's datasets package
 r_df <- morley
 str(r_df)
 
@@ -38,21 +38,17 @@ printSchema(df)
 df$ExptF <- NULL
 printSchema(df)
 
-# crosstab
-registerTempTable(df, "table_df")
-new_df <- sql(sqlContext, "select * from table_df")
-#TO DO: table + can we do crosstab with sql?
-
-# average per experiment
+# average
 head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
 
 # counts
 head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
 
-# two-way contingency tables
+# crosstab
 # find a new dataset
 HairEyeColor
 hec <- as.data.frame(HairEyeColor)
+head(hec)
 # can do this easily in R using xtabs from stats package
 xtabs(Freq ~ Hair + Eye, hec)
 # can do this in SparkR using sql + agg functions
@@ -71,6 +67,7 @@ second_table <- sql(sqlContext, "select Hair,
                    sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
 head(second_table)
 
+# two-way contingency tables
 # and we can use SparkSQL to get our row + column frequencies
 by_hair <- agg(groupBy(second_table, second_table$Hair), sum_per = sum(second_table$Freq))
 by_eye <- agg(groupBy(second_table, second_table$Eye), sum_per = sum(second_table$Freq))
