@@ -17,6 +17,7 @@ show(df) # no return
 printSchema(df) # no return
 
 # summary allows a quick stats update for data.frame
+# IMPORTANT NOTE: add in note about how collect brings things down to local
 collect(summary(df))
 
 # describe gives same, also allows you to focus on specific columns
@@ -61,16 +62,23 @@ printSchema(hdf)
 # using crosstab doesn't work the same here because of the shape of our data
 first_table <- crosstab(hdf, "Hair", "Eye")
 show(first_table)
+# nb> this returns a local R data.frame
 
-# but we can use SparkSQL to get our counts + frequencies
+# but we can use SparkSQL to get our counts
 registerTempTable(hdf, "haireyecolor")
-second_table <- collect(sql(sqlContext, "select Hair,
+second_table <- sql(sqlContext, "select Hair,
                    Eye,
-                   sum(Freq) as Counts from haireyecolor group by Hair, Eye order by Hair"))
+                   sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
 head(second_table)
 
+# and we can use SparkSQL to get our row + column frequencies
+by_hair <- agg(groupBy(second_table, second_table$Hair), sum_per = sum(second_table$Freq))
+by_eye <- agg(groupBy(second_table, second_table$Eye), sum_per = sum(second_table$Freq))
+head(by_hair)
+# TODO: how to divide by matching on HAIR or EYE?
+
 # categorical variables / factors...
-# not sure where to go with this
+# TODO: not sure where to go with this
 df$ExptF <- cast(df$Expt, "string")
 head(select(df, df$ExptF))
 printSchema(df)
