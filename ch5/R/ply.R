@@ -36,23 +36,25 @@ head(arrange(avg_df, asc(avg_df$decade)))
 head(summarize(groupBy(df, df$decade), count = countDistinct(df$x)))
 
 # summarize, groupBy, avg
-head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
+head(summarize(groupBy(df, df$decade), avg_x = avg(df$x)))
 
 # summarize, groupBy, counts
-head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
+head(summarize(groupBy(df, df$decade), num_yrs = n(df$year)))
+
+# sample fraction, w/ + w/o replacement
+# sample_frac(x, withReplacement, fraction, seed)
+collect(sample_frac(df, FALSE, 0.05))
+collect(sample_frac(df, FALSE, 0.05))
+
+collect(sample_frac(df, FALSE, 0.2, 7))
+collect(sample_frac(df, FALSE, 0.2, 7))
 
 # mutate
-
-# sample_n
-
-# sample_frac
-
 ## normalization
 
 ## standardization
 
 # handling missing data
-
 ## imputation
 
 ## gracefully handling bad data
