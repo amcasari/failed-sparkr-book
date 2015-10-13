@@ -29,21 +29,6 @@ collect(describe(df, "Expt", "Run"))
 head(select(df, "Expt"))
 head(select(df, df$Expt))
 
-# create new columns
-df$ExptF <- cast(df$Expt, "string")
-head(select(df, df$ExptF))
-printSchema(df)
-
-# delete columns
-df$ExptF <- NULL
-printSchema(df)
-
-# average
-head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
-
-# counts
-head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
-
 # crosstab
 # find a new dataset
 HairEyeColor
