@@ -29,6 +29,21 @@ collect(describe(df, "Expt", "Run"))
 head(select(df, "Expt"))
 head(select(df, df$Expt))
 
+# create new columns
+df$ExptF <- cast(df$Expt, "string")
+head(select(df, df$ExptF))
+printSchema(df)
+
+# delete columns
+df$ExptF <- NULL
+printSchema(df)
+
+# average
+head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
+
+# counts
+head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
+
 # crosstab
 # find a new dataset
 HairEyeColor
@@ -48,8 +63,8 @@ show(first_table)
 # but we can use SparkSQL to get our counts
 registerTempTable(hdf, "haireyecolor")
 second_table <- sql(sqlContext, "select Hair,
-                   Eye,
-                   sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
+                    Eye,
+                    sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
 head(second_table)
 
 # two-way contingency tables
