@@ -10,7 +10,8 @@ df <- createDataFrame(sqlContext, r_df)
 
 # find out more about df
 head(df) # returns a data.frame
-showDF(df, numRows = 10)
+head(df,2) # returns a data.frame
+showDF(df, numRows = 5)
 dtypes(df) # returns a list
 columns(df) # returns a character
 show(df) # no return
@@ -18,7 +19,9 @@ printSchema(df) # no return
 
 # summary allows a quick stats update for data.frame
 # IMPORTANT NOTE: add in note about how collect brings things down to local
-collect(summary(df))
+local <- collect(summary(df))
+local
+typeof(local)
 
 # describe gives same, also allows you to focus on specific columns
 collect(describe(df))
@@ -28,6 +31,10 @@ collect(describe(df, "Expt", "Run"))
 # column access
 head(select(df, "Expt"))
 head(select(df, df$Expt))
+selected_cols <- select(df,df[[1]])
+head(selected_cols, 2)
+selected_cols2 <- df[,c("Speed","Expt")]
+head(selected_cols2, 2)
 
 # create new columns
 df$ExptF <- cast(df$Expt, "string")
