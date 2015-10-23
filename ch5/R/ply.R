@@ -65,11 +65,4 @@ x_sigma <- as.numeric(df_stats[3,2])
 df$standard_score <- (df$x - x_mu) / x_sigma
 showDF(df, numRows = 5)
 
-# handling missing data
-## imputation
-
-## gracefully handling bad data
-
-## NA's and NULLs
-
 sparkR.stop()
