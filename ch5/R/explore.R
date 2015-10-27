@@ -51,36 +51,6 @@ head(summarize(groupBy(df, df$Expt), avg_sp = avg(df$Speed)))
 # counts
 head(summarize(groupBy(df, df$Expt), num_runs = n(df$Run)))
 
-# crosstab
-# find a new dataset
-HairEyeColor
-hec <- as.data.frame(HairEyeColor)
-head(hec)
-# can do this easily in R using xtabs from stats package
-xtabs(Freq ~ Hair + Eye, hec)
-# can do this in SparkR using sql + agg functions
-hdf <- createDataFrame(sqlContext, hec)
-printSchema(hdf)
-
-# using crosstab doesn't work the same here because of the shape of our data
-first_table <- crosstab(hdf, "Hair", "Eye")
-show(first_table)
-# nb> this returns a local R data.frame
-
-# but we can use SparkSQL to get our counts
-registerTempTable(hdf, "haireyecolor")
-second_table <- sql(sqlContext, "select Hair,
-                    Eye,
-                    sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
-head(second_table)
-
-# two-way contingency tables
-# and we can use SparkSQL to get our row + column frequencies
-by_hair <- agg(groupBy(second_table, second_table$Hair), sum_per = sum(second_table$Freq))
-by_eye <- agg(groupBy(second_table, second_table$Eye), sum_per = sum(second_table$Freq))
-head(by_hair)
-# TODO: how to divide by matching on HAIR or EYE?
-
 # categorical variables / factors...
 # TODO: not sure where to go with this
 df$ExptF <- cast(df$Expt, "string")
@@ -88,12 +58,22 @@ head(select(df, df$ExptF))
 printSchema(df)
 
 # initial viz: histograms
-#TODO: BETTER DATA EXAMPLE THAN THIS
+hec <- as.data.frame(HairEyeColor)
+head(hec)
+# can do this in SparkR using sql + agg functions
+hdf <- createDataFrame(sqlContext, hec)
+printSchema(hdf)
+
+registerTempTable(hdf, "haireyecolor")
+second_table <- sql(sqlContext, "select Hair,
+                    Eye,
+                    sum(Freq) as Freq from haireyecolor group by Hair, Eye order by Hair")
+head(second_table)
+
 library(ggplot2)
 qplot(Freq, data = collect(second_table), geom = "histogram")
 
 # initial viz: scatter plots
-#TODO: BETTER DATA EXAMPLE THAN THIS
 qplot(Hair, Freq, data = take(second_table, 10))
 
 sparkR.stop()
