@@ -1,5 +1,5 @@
 #command line code
-#adapted directly from spark project's  test_sparkSQL.R
+#adapted directly from spark project's  test_sparkSQL.R and other examples
 #for the purpose of testing simple examples of code and learning
 
 Sys.setenv(SPARK_HOME="/my/spark/home")
@@ -8,13 +8,41 @@ library(SparkR)
 sc <- sparkR.init(master="local[2]",appName="SparkR-test_example")
 sqlContext <- sparkRSQL.init(sc)
 
+mockLines <- c("{\"name\":\"Michael\"}",
+               "{\"name\":\"Andy\", \"age\":30}",
+               "{\"name\":\"Justin\", \"age\":19}")
+jsonPath <- tempfile(pattern="sparkr-test", fileext=".tmp")
+writeLines(mockLines, jsonPath)
+df <- jsonFile(sqlContext, jsonPath)
+
+mockLines2 <- c("{\"name\":\"Michael\", \"test\": \"yes\"}",
+                  "{\"name\":\"Andy\",  \"test\": \"no\"}",
+                  "{\"name\":\"Justin\", \"test\": \"yes\"}",
+                  "{\"name\":\"Bob\", \"test\": \"yes\"}")
+jsonPath2 <- tempfile(pattern="sparkr-test", fileext=".tmp")
+writeLines(mockLines2, jsonPath2)
+df2 <- jsonFile(sqlContext, jsonPath2)
+
+joined <- join(df, df2)
+joined2 <- join(df, df2, df$name == df2$name)
+joined3 <- join(df, df2, df$name == df2$name, "rightouter")
+joined4 <- select(join(df, df2, df$name == df2$name, "outer"),
+                    alias(df$age + 5, "newAge"), df$name, df2$test)
+joined5 <- join(df, df2, df$name == df2$name, "leftouter")
+joined6 <- join(df, df2, df$name == df2$name, "inner")
+joined7 <- join(df, df2, df$name == df2$name, "leftsemi")
+joined8 <- join(df, df2, df$name == df2$name, "left_outer")
+joined9 <- join(df, df2, df$name == df2$name, "right_outer")
+
+################
+another examples
+###################
 
 n <- c(2, 3, 5)
 s <- c("aa", "bb", "cc")
 b <- c(TRUE, FALSE, TRUE)
 df <- data.frame(n, s, b)
 df1 <- createDataFrame(sqlContext, df)
-
 
 x <- c(2, 3, 10)
 t <- c("dd", "bb", "ff")
