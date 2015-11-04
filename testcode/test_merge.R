@@ -1,6 +1,6 @@
+#command line code
 #adapted directly from spark project's  test_sparkSQL.R
 #for the purpose of testing simple examples of code and learning
-
 
 Sys.setenv(SPARK_HOME="/my/spark/home")
 .libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
