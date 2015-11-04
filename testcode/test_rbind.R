@@ -1,3 +1,10 @@
+Sys.setenv(SPARK_HOME="/my/spark/home")
+.libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
+library(SparkR)
+sc <- sparkR.init(master="local[2]",appName="SparkR-example", sparkPackages="com.databricks:spark-csv_2.11:1.2.0")
+sqlContext <- sparkRSQL.init(sc)
+
+
 mockLines <- c("{\"name\":\"Michael\"}",
                "{\"name\":\"Andy\", \"mmages\":30}",
                "{\"name\":\"Justin\", \"mmages\":19}")
@@ -18,7 +25,6 @@ collect(df2)
 
 unioned <- rbind(df, df2)
 collect(unioned)
-
 
 unioned2 <- arrange(rbind(df, df2), df$name)
 collect(unioned2)
