@@ -5,7 +5,7 @@
 Sys.setenv(SPARK_HOME="/my/spark/home")
 .libPaths(c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib"), .libPaths()))
 library(SparkR)
-sc <- sparkR.init(master="local[2]",appName="SparkR-example", sparkPackages="com.databricks:spark-csv_2.11:1.2.0")
+sc <- sparkR.init(master="local[2]",appName="SparkR-test_example")
 sqlContext <- sparkRSQL.init(sc)
 
 mockLines <- c("{\"name\":\"Michael\"}",
