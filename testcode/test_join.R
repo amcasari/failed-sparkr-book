@@ -22,3 +22,13 @@ showDF(res)
 
 df3 <- join(df1, df2, df1$n==df2$x & df1$s==df2$t)
 
+#############
+#another example
+##############
+x <- data.frame(k1 = c(NA,NA,3,4,5), k2 = c(1,NA,NA,4,5), data = 1:5)
+y <- data.frame(k1 = c(NA,2,NA,4,5), k2 = c(NA,NA,3,4,5), data = 1:5)
+xdf <- createDataFrame(sqlContext, x) 
+ydf <- createDataFrame(sqlContext, y) 
+res <- join(xdf,ydf)
+head(res)
+
