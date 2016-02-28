@@ -37,11 +37,9 @@ sql(sqlContext, "SELECT *, IF (Species LIKE 'setosa', 0, 1) AS numlabel FROM dt"
 newiris <- sql(sqlContext, "SELECT *, IF (Species LIKE 'setosa', 0,1) AS numlabel FROM dt")
 showDF(newiris)
 
+####### try and get 3 cases to work but nothing does #########
 sql(hiveContext, "SELECT *, IF (Species LIKE 'setosa' THEN 0) ELSE IF (Species LIKE 'virginica' THEN 1) ELSE 2 END IF AS numlabel FROM dt")
-
-val df4 = sql(""" select *, case when color = 'green' then 1 else 0 end as Green_ind from data """)
 sql(hiveContext, "SELECT *, case when Species = 'setosa' then 0 else if (Species = 'virginica') else 2 end AS numlabel FROM dt") %>% showDF()
-
 sql(sqlContext, "SELECT *, case when Species = 'setosa' then 0 else if Species = 'virginica' then 1 else 2 end as numlabel FROM dt") %>% showDF()
 sql(sqlContext, "SELECT *, case when Species = 'setosa' then 0 else 2 end as numlabel FROM dt") %>% showDF()
 
